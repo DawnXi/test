@@ -18,8 +18,10 @@ services:
     - ls
     - cd /etc/nginx/
     - ls
+    - cat -n /etc/nginx/nginx.conf
     - cd /etc/nginx/sites-enabled
     - ls
+    - cat /etc/nginx/sites-enabled/default
     - nginx -t
     - nginx
     - service nginx status
