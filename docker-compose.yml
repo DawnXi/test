@@ -1,0 +1,102 @@
+# version: '3'
+# services:
+
+#   drone-server:
+#     image: drone/drone:0.8-alpine
+#     ports:
+#       - 5500:5500
+#       # - "${PRO_PUBLIC_IP}:8000:8000"
+#     volumes:
+#       - drone-data:/var/lib/drone/:rw
+#       - /etc/nginx/cert/yangmingxi.pem:/etc/certs:rw
+#     restart: always
+#     environment:
+#       - DRONE_SECRET=drone
+#       - DRONE_OPEN=false
+#       - DRONE_ADMIN=DawnXi
+#       - DRONE_HOST=https://www.ktoffoo.xyz
+#       - DRONE_GITHUB=true
+#       - DRONE_GITHUB_CLIENT=6f27c286698b59c1f466
+#       - DRONE_GITHUB_SECRET=d8300a6453c979d391b2e1209709667099c06ea8
+#       - DRONE_SERVER_CERT=/etc/certs/drone.domain.com.crt
+#       - DRONE_SERVER_KEY=/etc/certs/drone.domain.com.key
+
+#   drone-agent:
+#     image: drone/agent:0.8-alpine
+#     restart: always
+#     depends_on:
+#       - drone-server
+#     volumes:
+#       - /var/run/docker.sock:/var/run/docker.sock:rw
+#     environment:
+#       - DRONE_SECRET=drone
+#       - DRONE_SERVER=drone-server:9000
+#     dns: 114.114.114.114
+
+# volumes:
+#   drone-data:
+
+
+
+version: "3.7"
+services:
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: drone_nginx
+  #   ports:
+  #     - "5500:5500"
+  #   restart: always
+  #   networks:
+  #     - dronenet
+  # mysql:
+  #   image: mysql:5.7
+  #   restart: always
+  #   container_name: drone_mysql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD={}root123
+  #     - MYSQL_DATABASE=feedback
+  #     - MYSQL_USER=drone
+  #     - MYSQL_PASSWORD=drone_password
+  #   networks:
+  #     - dronenet
+  #   volumes:
+  #     - /path/to/conf/my.cnf:/etc/mysql/my.cnf:rw
+  #     - /path/to/data:/var/lib/mysql/:rw
+  #     - /path/to/logs:/var/log/mysql/:rw
+  drone-server:
+    image: drone/drone:1.0.0-rc.5 #不要用latest,latest并非稳定版本
+    container_name: dronetest_server
+    networks: 
+      - dronenet
+    volumes:
+      - ${DRONE_DATA}:/var/lib/drone/:rw
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+    restart: always
+    environment:0000
+      - DRONE_DEBUG=true
+      #- DRONE_DATABASE_DATASOURCE=drone:drone_password@tcp(drone_mysql:3306)/drone?parseTime=true   #mysql配置，要与上边mysql容器中的配置一致
+      #- DRONE_DATABASE_DRIVER=mysql
+      - DRONE_GITHUB_SERVER=https://github.com
+      - DRONE_GITHUB_CLIENT_ID=6f27c286698b59c1f466  #Github Client ID
+      - DRONE_GITHUB_CLIENT_SECRET=d8300a6453c979d391b2e1209709667099c06ea8 #Github Client Secret
+      - DRONE_RUNNER_CAPACITY=2
+      - DRONE_RPC_SECRET=YOU_KEY_ALQU2M0KdptXUdTPKcEw  #RPC秘钥
+      - DRONE_SERVER_PROTO=http     #这个配置决定了你激活时仓库中的webhook地址的proto
+      - DRONE_SERVER_HOST=drone.ktoffoo.xyz
+      - DRONE_USER_CREATE=username:DawnXi,admin:true  #管理员账号，一般是你github用户名
+  drone-agent:
+    image: drone/agent:1.0.0-rc.5
+    container_name: dronetest_agent
+    restart: always
+    networks: 
+      - dronenet
+    depends_on:
+      - drone-server  #依赖drone_server，并在其后启动
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+    environment:
+      - DRONE_RPC_SERVER=http://drone_server  #drone用的http请求包，url一定要写上协议才能支持
+      - DRONE_RPC_SECRET=YOU_KEY_ALQU2M0KdptXUdTPKcEw  #RPC秘钥，要与drone_server中的一致
+      - DRONE_DEBUG=true
+networks:
+  dronenet:
