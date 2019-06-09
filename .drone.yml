@@ -15,6 +15,11 @@ services:
 - name: my-image
   image: registry.cn-hangzhou.aliyuncs.com/web-ci/web-build:v1
   commands:
+    - ls
+    - cd /etc/nginx/
+    - ls
+    - cd /etc/nginx/sites-enabled
+    - ls
     - nginx -t
     - nginx
     - service nginx status
