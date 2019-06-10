@@ -15,7 +15,7 @@ services:
     MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
 
 - name: my-image
-  image: registry.cn-hangzhou.aliyuncs.com/web-ci/nginx-build:v2
+  image: registry.cn-hangzhou.aliyuncs.com/web-ci/nginx-test:v1
   commands:
     # - service nginx status
     # - ls
