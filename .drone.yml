@@ -22,8 +22,6 @@ services:
     - cd /etc/nginx/sites-enabled
     - ls
     - cat /etc/nginx/sites-enabled/default
-    - nginx -t
-    - nginx
     - service nginx status
     - curl http://www.baidu.com
 # steps:
