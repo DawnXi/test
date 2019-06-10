@@ -25,7 +25,6 @@ services:
     - nginx -t
     - nginx
     - service nginx status
-    - curl http://www.baidu.com
     - curl http://localhost
 # steps:
 #   - name: vue-install test-unit test-e2e
