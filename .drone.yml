@@ -13,7 +13,7 @@ services:
     MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
 
 - name: my-image
-  image: registry.cn-hangzhou.aliyuncs.com/web-ci/web-build:v1
+  image: registry.cn-hangzhou.aliyuncs.com/web-ci/nginx-build
   commands:
     - ls
     - cd /etc/nginx/
@@ -25,7 +25,7 @@ services:
     - nginx -t
     - nginx
     - service nginx status
-    - test test test
+    - curl http://www.baidu.com
 # steps:
 #   - name: vue-install test-unit test-e2e
 #     image: cypress/included:3.2.0
