@@ -26,6 +26,7 @@ services:
     - nginx
     - service nginx status
     - curl http://www.baidu.com
+    - curl http://localhost
 # steps:
 #   - name: vue-install test-unit test-e2e
 #     image: cypress/included:3.2.0
