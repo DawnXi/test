@@ -24,6 +24,7 @@ services:
     # - cat -n /etc/nginx/sites-enabled/default
     # - nginx -t
     # - nginx -s reload
+    # #####
     - service nginx status
     - curl http://localhost
 steps:
