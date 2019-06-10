@@ -28,7 +28,7 @@ services:
     - sudo nginx -s reload
     - service nginx status
     - curl http://localhost
-# steps:
+steps:
 #   - name: vue-install test-unit test-e2e
 #     image: cypress/included:3.2.0
 #     commands:
