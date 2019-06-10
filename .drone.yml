@@ -1,7 +1,9 @@
 #定义步骤
 kind: pipeline
 name: default
-
+workspace:
+ base: /var
+ path: www/feedback
 
 services:
 - name: database
